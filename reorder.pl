@@ -16,9 +16,12 @@ my $eolrep = "#";
 
 my $lx;
 my $debug=1;
-my @opledfile_in =('\lx iyikxi-a̱kayo#\mn -ikxi#\mn a̱ka#',
-'\lx atowunhɛ#\mn -hɛ#\mn wun#\mn atɔ#',
-'\lx living on the wild side#\mn live#\mn side#\mn wild#');
+my @opledfile_in =(
+	'\lx iyikxi-a̱kayo#\mn -ikxi#\mn a̱ka#',
+	'\lx atowunhɛ#\mn -hɛ#\mn wun#\mn atɔ#',
+	'\lx living on the wild side#\mn live#\mn side#\mn wild#',
+	'\lx test homograph and sense numbers and something totally wrong#\mn wrong#\mn totally#\cm interspersed field#\mn homograph3#\mn something2 4#\ps v#\mn xyzzy#\mn sense number 2#\mn #\dt 08/11/2023##'
+	);
 
 for my $oplline (@opledfile_in) {
 	my @mns; # modified \mn fields
