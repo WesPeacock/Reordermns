@@ -1,5 +1,14 @@
+#!/usr/bin/env perl
+my $USAGE = "Usage: $0 [--inifile inifile.ini] [--section section] [--recmark lx] [--eolrep #] [--reptag __hash__] [--debug] [file.sfm]\n";
 use String::Approx qw{aindex amatch};
 use v5.20;
+use utf8;
+use open qw/:std :utf8/;
+
+use strict;
+use warnings;
+use English;
+use Data::Dumper qw(Dumper);
 =pod
 my $lx= $1 if /\\lx ([^#]*)/;
 if (/(\\mn[^#]*#)+/) {
