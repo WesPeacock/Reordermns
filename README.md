@@ -28,4 +28,5 @@ This script will reorder the *\\mn* fields into the order they occur on the *\\l
 
 ## Bugs and Enhancements
  - The script uses the fuzzy match String::Approx 'aindex'. It doesn't handle short words well.
+ - should error message null *\\mn* fields.
  
