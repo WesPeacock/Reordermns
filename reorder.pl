@@ -12,6 +12,7 @@ use Data::Dumper qw(Dumper);
 
 my $recmark= 'lx';
 my $mnrefmark = "mn";
+my $hmmark = "hm";
 my $eolrep = "#";
 
 my $lx;
@@ -20,7 +21,8 @@ my @opledfile_in =(
 	'\lx iyikxi-a̱kayo#\mn -ikxi#\mn a̱ka#',
 	'\lx atowunhɛ#\mn -hɛ#\mn wun#\mn atɔ#',
 	'\lx living on the wild side#\mn live#\mn side#\mn wild#',
-	'\lx test homograph and sense numbers and something totally wrong#\mn wrong#\mn totally#\cm interspersed field#\mn homograph3#\mn something2 4#\ps v#\mn xyzzy#\mn sense number 2#\mn #\dt 08/11/2023##'
+	'\lx test homograph and sense numbers and something totally wrong#\mn wrong#\mn totally#\cm interspersed field#\mn homograph3#\mn something2 4#\ps v#\mn xyzzy#\mn sense number 2#\mn #\dt 08/11/2023##',
+	'\lx entry with its own homograph number#\mn its#\mn entry#\hm 2#\mn number 8#\de a test of correct placement of re-order mns#\mn homograph3#\mn own#\mn with#\cm does it work?#\mn own#\dt 08/17/2023##'
 	);
 
 for my $oplline (@opledfile_in) {
@@ -61,5 +63,12 @@ for my $oplline (@opledfile_in) {
 	foreach (@mns) {
 		say STDERR $_ if $debug;
 		}
-	say STDERR join q(), @mnorgs if $debug;
+	my $mnorgs_string=join q(), @mnorgs;
+	say STDERR "mnorgs as string:$mnorgs_string" if $debug;
+	$oplline =~ s/\\$mnrefmark [^$eolrep]*$eolrep//g; # delete the original mn fields
+	$oplline =~ s/(\\$recmark [^$eolrep]+$eolrep(\\$hmmark [^$eolrep]+$eolrep)?)/$1$mnorgs_string/;
+	say STDERR "final oplline:$oplline" if $debug;
+	say STDERR "" if $debug;
+	say STDERR "" if $debug;
 	}
+
