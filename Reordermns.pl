@@ -89,13 +89,55 @@ while (<>) {
 	else { $line .= $_ }
 	}
 push @opledfile_in, $line;
-die;
+say STDERR "opledfile_in:", Dumper(@opledfile_in) if $debug;
+use String::Approx qw{aindex amatch};
 for my $oplline (@opledfile_in) {
-# Insert code here to perform on each opl'ed line.
-# Note that a next command will prevent the line from printing
-
-say STDERR "oplline:", Dumper($oplline) if $debug;
-#de_opl this line
+	my $lx;
+	my @mns; # modified \mn fields
+	my @mnorgs; # unmodified \mn fields (may contain homograph/sense numbers
+	my @fuzinds; # fuzzy index of location of \mn field within \lx
+	say STDERR "oplline:$oplline"  if $debug;
+	next if ! ($oplline =~ m/\\$recmark ([^$eolrep]+)/);
+	$lx = $1;
+	say STDERR "lx:$lx"  if $debug;
+	next if ! ($oplline =~ m/\\$mnrefmark /);
+	while  ($oplline  =~ /\\$mnrefmark [^$eolrep]*$eolrep/g) {
+		my $mn=$MATCH;
+		push @mnorgs, $mn;
+		$mn =~ s/\\$mnrefmark //;
+		$mn =~ s/$eolrep//;
+		$mn = lc($mn);
+		$mn =~ s/ *[0-9]//g; # remove homograph and sense numbers
+		say $LOGFILE "Found empty \\$mnrefmark field in line:$oplline" if length($mn) == 0;
+		push @mns, $mn;
+		}
+	foreach (@mns) {
+		push @fuzinds, aindex ($_, $lx);
+		}
+	# H/T https://stackoverflow.com/a/16397775/1170224
+	my @order = sort { $fuzinds[$a] <=> $fuzinds [$b] } 0 .. $#fuzinds;
+	print STDERR "mnorgs:", Dumper @mnorgs  if $debug;
+	print STDERR "mns:", Dumper @mns  if $debug;
+	print STDERR "fuzinds:", Dumper @fuzinds  if $debug;
+	print STDERR "order:", Dumper @order  if $debug;
+	@mnorgs = @mnorgs[@order];
+	@mns = @mns[@order];
+	@fuzinds = @fuzinds[@order];
+	for ( my $i = 0; $i < @fuzinds; $i++ ) {
+		say $LOGFILE "Couldn't find (", $mns[$i], ") inside ($lx)\nIn line:$oplline" if $fuzinds[$i] < 0;
+		}
+	say STDERR "lx:$lx" if $debug;
+	say STDERR "\\mns:" if $debug;
+	foreach (@mns) {
+		say STDERR $_ if $debug;
+		}
+	my $mnorgs_string=join q(), @mnorgs;
+	say STDERR "mnorgs as string:$mnorgs_string" if $debug;
+	$oplline =~ s/\\$mnrefmark [^$eolrep]*$eolrep//g; # delete the original mn fields
+	$oplline =~ s/(\\$recmark [^$eolrep]+$eolrep(\\$hmmark [^$eolrep]+$eolrep)?)/$1$mnorgs_string/;
+	say STDERR "final oplline:$oplline" if $debug;
+	say STDERR "" if $debug;
+	say STDERR "" if $debug;
 	for ($oplline) {
 		$crlf=$MATCH if /\R/;
 		s/$eolrep/$crlf/g;
