@@ -61,16 +61,16 @@ die "Quitting: couldn't find the INI file $inifilename\n$USAGE\n" if !$config;
 
 $recmark = $config->{"$inisection"}->{recmark} if $config->{"$inisection"}->{recmark};
 
-my $mainrefmark = $config->{"$inisection"}->{mainrefmark};
+my $mnrefmark = $config->{"$inisection"}->{mainrefmark};
 
 my $hmmark = $config->{"$inisection"}->{homographmark};
-for ($recmark, $mainrefmark, $hmmark) {
+for ($recmark, $mnrefmark, $hmmark) {
 	# remove backslashes and spaces from the SFMs in the INI file
 	s/\\//g;
 	s/ //g;
 	}
 say STDERR "record marker: $recmark" if $debug;
-say STDERR "mainrefmark: $mainrefmark" if $debug;
+say STDERR "mnrefmark: $mnrefmark" if $debug;
 say STDERR "hmmark:$hmmark" if $debug;
 
 # generate array of the input file with one SFM record per line (opl)
