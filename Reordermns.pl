@@ -139,6 +139,10 @@ for my $oplline (@opledfile_in) {
 	say STDERR "final oplline:$oplline" if $debug;
 	say STDERR "" if $debug;
 	say STDERR "" if $debug;
+	}
+
+#output the modified file
+for my $oplline (@opledfile_in) {
 	for ($oplline) {
 		$crlf=$MATCH if /\R/;
 		s/$eolrep/$crlf/g;
