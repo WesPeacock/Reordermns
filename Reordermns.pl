@@ -100,6 +100,7 @@ for my $oplline (@opledfile_in) {
 	next if ! ($oplline =~ m/\\$recmark ([^$eolrep]+)/);
 	$lx = $1;
 	say STDERR "lx:$lx"  if $debug;
+	$oplline =~ s/\\$mnrefmark$eolrep/\\$mnrefmark $eolrep/; # handle a bare mn marker as if it had a null field
 	next if ! ($oplline =~ m/\\$mnrefmark /);
 	while  ($oplline  =~ /\\$mnrefmark [^$eolrep]*$eolrep/g) {
 		my $mn=$MATCH;
