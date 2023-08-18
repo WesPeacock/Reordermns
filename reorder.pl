@@ -41,6 +41,7 @@ for my $oplline (@opledfile_in) {
 		$mn =~ s/$eolrep//;
 		$mn = lc($mn);
 		$mn =~ s/ *[0-9]//g; # remove homograph and sense numbers
+		say STDERR "Found empty \\$mnrefmark field in line:$oplline" if length($mn) == 0;
 		push @mns, $mn;
 		}
 	foreach (@mns) {
