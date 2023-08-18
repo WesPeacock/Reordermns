@@ -108,7 +108,7 @@ for my $oplline (@opledfile_in) {
 		$mn =~ s/$eolrep//;
 		$mn = lc($mn);
 		$mn =~ s/ *[0-9]//g; # remove homograph and sense numbers
-		say $LOGFILE "Found empty \\$mnrefmark field in line:$oplline" if length($mn) == 0;
+		say $LOGFILE "Found an empty \\$mnrefmark field in record:$oplline" if length($mn) == 0;
 		push @mns, $mn;
 		}
 	foreach (@mns) {
@@ -124,7 +124,7 @@ for my $oplline (@opledfile_in) {
 	@mns = @mns[@order];
 	@fuzinds = @fuzinds[@order];
 	for ( my $i = 0; $i < @fuzinds; $i++ ) {
-		say $LOGFILE "Couldn't find (", $mns[$i], ") inside ($lx)\nIn line:$oplline" if $fuzinds[$i] < 0;
+		say $LOGFILE "Couldn't find (", $mns[$i], ") inside ($lx)\nIn record:$oplline" if $fuzinds[$i] < 0;
 		}
 	say STDERR "lx:$lx" if $debug;
 	say STDERR "\\mns:" if $debug;
