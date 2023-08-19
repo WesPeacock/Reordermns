@@ -28,5 +28,5 @@ This script will reorder the *\\mn* fields into the order they occur on the *\\l
 
 ## Bugs and Enhancements
  - The script uses the fuzzy match String::Approx 'aindex'. It doesn't handle short words well.
- - The script could handle prefixes, suffixes, infixes and circumfixes as special cases.
+ - The script could handle prefixes, suffixes, infixes and circumfixes as special cases. It currently either ignores them or includes them.
  

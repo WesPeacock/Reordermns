@@ -10,6 +10,8 @@ Here is a sample:
 recmark=lx
 mainrefmark=mn
 homographmark=hm
+# parameters affecting the fuzzy search:
+includehyphen=off
 
 =cut
 use 5.020;
@@ -60,18 +62,18 @@ my $config = Config::Tiny->read($inifilename, 'crlf');
 die "Quitting: couldn't find the INI file $inifilename\n$USAGE\n" if !$config;
 
 $recmark = $config->{"$inisection"}->{recmark} if $config->{"$inisection"}->{recmark};
-
 my $mnrefmark = $config->{"$inisection"}->{mainrefmark};
-
 my $hmmark = $config->{"$inisection"}->{homographmark};
 for ($recmark, $mnrefmark, $hmmark) {
 	# remove backslashes and spaces from the SFMs in the INI file
 	s/\\//g;
 	s/ //g;
 	}
+my $includehyphen = ($config->{"$inisection"}->{includehyphen} =~ /on/);
 say STDERR "record marker: $recmark" if $debug;
 say STDERR "mnrefmark: $mnrefmark" if $debug;
 say STDERR "hmmark:$hmmark" if $debug;
+say STDERR "includehyphen:$includehyphen" if $debug;
 
 # generate array of the input file with one SFM record per line (opl)
 my @opledfile_in;
@@ -109,6 +111,7 @@ for my $oplline (@opledfile_in) {
 		$mn =~ s/$eolrep//;
 		$mn = lc($mn);
 		$mn =~ s/ *[0-9]//g; # remove homograph and sense numbers
+		$mn =~ s/\-//g unless $includehyphen;
 		say $LOGFILE "Found an empty \\$mnrefmark field in record:$oplline" if length($mn) == 0;
 		push @mns, $mn;
 		}
@@ -133,7 +136,7 @@ for my $oplline (@opledfile_in) {
 		say STDERR $_ if $debug;
 		}
 	my $mnorgs_string=join q(), @mnorgs;
-	say STDERR "mnorgs as string:$mnorgs_string" if $debug;
+	say STDERR "Reordered mnorgs as string:$mnorgs_string" if $debug;
 	$oplline =~ s/\\$mnrefmark [^$eolrep]*$eolrep//g; # delete the original mn fields
 	$oplline =~ s/(\\$recmark [^$eolrep]+$eolrep(\\$hmmark [^$eolrep]+$eolrep)?)/$1$mnorgs_string/;
 	say STDERR "final oplline:$oplline" if $debug;
