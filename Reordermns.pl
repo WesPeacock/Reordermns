@@ -12,7 +12,7 @@ mainrefmark=mn
 homographmark=hm
 # parameters affecting the fuzzy search:
 includehyphen=off
-
+fuzzymodifier=35%
 =cut
 use 5.020;
 use utf8;
@@ -70,10 +70,12 @@ for ($recmark, $mnrefmark, $hmmark) {
 	s/ //g;
 	}
 my $includehyphen = ($config->{"$inisection"}->{includehyphen} =~ /on/);
+my $fuzzymodifier = $config->{"$inisection"}->{fuzzymodifier};
 say STDERR "record marker: $recmark" if $debug;
 say STDERR "mnrefmark: $mnrefmark" if $debug;
 say STDERR "hmmark:$hmmark" if $debug;
 say STDERR "includehyphen:$includehyphen" if $debug;
+say STDERR "fuzzymodifier:$fuzzymodifier" if $debug;
 
 # generate array of the input file with one SFM record per line (opl)
 my @opledfile_in;
@@ -116,7 +118,7 @@ for my $oplline (@opledfile_in) {
 		push @mns, $mn;
 		}
 	foreach (@mns) {
-		push @fuzinds, aindex ($_, $lx);
+		push @fuzinds, aindex ($_, ["$fuzzymodifier"], $lx);
 		}
 	# H/T https://stackoverflow.com/a/16397775/1170224
 	my @order = sort { $fuzinds[$a] <=> $fuzinds [$b] } 0 .. $#fuzinds;
