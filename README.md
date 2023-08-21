@@ -34,6 +34,11 @@ The script reads and initialization file that affects how it runs. It allows you
 
 It allows you to specify whether to include a hyphen in the search (no).
 
+## Log file
+The script writes errors it finds to the log file.
+It flags records with empty *\\mn* fields and those where it couldn't find the *\\mn* field in the record.
+By default the log file has the same name as the script and is left in the current directory.
+
 ## Bugs and Enhancements
  - The script uses the fuzzy match String::Approx 'aindex'. It doesn't handle short words well.
  - The script could handle prefixes, suffixes, infixes and circumfixes as special cases. It currently either ignores them or includes them.
