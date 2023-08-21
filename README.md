@@ -26,6 +26,14 @@ This script will reorder the *\\mn* fields into the order they occur on the *\\l
 ````
 *"leaf2"* is marked as homograph *2* because it is "leaf of a book". Presumably, "leaf of a tree" would be homograph *1*.
 
+## INI file
+The script reads and initialization file that affects how it runs. It allows you to change some of the SFM markers (default):
+- record marker (\lx)
+- main reference (\mn)
+- homograph marker (\hm)
+
+It allows you to specify whether to include a hyphen in the search (no).
+
 ## Bugs and Enhancements
  - The script uses the fuzzy match String::Approx 'aindex'. It doesn't handle short words well.
  - The script could handle prefixes, suffixes, infixes and circumfixes as special cases. It currently either ignores them or includes them.
