@@ -76,7 +76,7 @@ say STDERR "mnrefmark: $mnrefmark" if $debug;
 say STDERR "hmmark:$hmmark" if $debug;
 say STDERR "includehyphen:$includehyphen" if $debug;
 say STDERR "fuzzymodifier:$fuzzymodifier" if $debug;
-
+die "Error: INI file is missing a necessary parameter, one of: recmark, mainrefmark, homographmark, includehyphen, fuzzymodifier." if (! defined $recmark || ! defined $mnrefmark || ! defined  $hmmark || ! defined  $includehyphen || ! defined  $fuzzymodifier);
 # generate array of the input file with one SFM record per line (opl)
 my @opledfile_in;
 my $line = ""; # accumulated SFM record
