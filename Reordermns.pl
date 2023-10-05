@@ -71,9 +71,9 @@ for ($recmark, $mnrefmark, $hmmark) {
 	}
 my $includehyphen = ($config->{"$inisection"}->{includehyphen} =~ /on/);
 my $fuzzymodifier = $config->{"$inisection"}->{fuzzymodifier};
-say STDERR "record marker: $recmark" if $debug;
-say STDERR "mnrefmark: $mnrefmark" if $debug;
-say STDERR "hmmark:$hmmark" if $debug;
+say STDERR "recmark: $recmark" if $debug;
+say STDERR "mainrefmark: $mnrefmark" if $debug;
+say STDERR "homographmark:$hmmark" if $debug;
 say STDERR "includehyphen:$includehyphen" if $debug;
 say STDERR "fuzzymodifier:$fuzzymodifier" if $debug;
 die "Error: INI file is missing a necessary parameter, one of: recmark, mainrefmark, homographmark, includehyphen, fuzzymodifier." if (! defined $recmark || ! defined $mnrefmark || ! defined  $hmmark || ! defined  $includehyphen || ! defined  $fuzzymodifier);
